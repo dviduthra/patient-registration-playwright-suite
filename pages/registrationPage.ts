@@ -81,6 +81,11 @@ export class RegistrationPage {
     return this.page.getByRole('button', { name: 'Next' })
   }
 
+  get successBanner() {
+    return this.page.locator('button[aria-label="Close notification"]')
+      .locator('..')
+  }
+
   //// PASSWORD DETAILS ──────────────────────────────────────────────────────
 
   get sexAtBirth() {
@@ -153,6 +158,10 @@ export class RegistrationPage {
 
   get emailError() {
     return this.page.getByText('Please enter a valid email address')
+  }
+
+  get emailInvalid() {
+    return this.page.locator('input[type="email"]')
   }
 
   get phoneError() {
