@@ -7,8 +7,8 @@ Automated end-to-end test suite for the patient registration workflow at [Script
 ## Tech Stack
 
 - [Playwright](https://playwright.dev/) + TypeScript
-- [Faker.js](https://fakerjs.dev/) — random test data generation
-- [Axe-core](https://github.com/dequelabs/axe-core) — accessibility checks
+- [Faker.js](https://fakerjs.dev/)  - random test data generation
+- [Axe-core](https://github.com/dequelabs/axe-core)  - accessibility checks
 
 ---
 
@@ -77,22 +77,22 @@ BASE_URL=https://scriptassist-uat-patient.scriptassist.co.uk
 | `npx playwright test tests/registration.test.ts` | Run specific file |
 | `npx playwright show-report` | Open HTML report |
 
-> For local development/environment, it is recommended to run with `--project=chromium --workers=1` to avoid overloading your machine.
+> For local development/environment, it is recommended to run with `--workers=1` at the end of the command to avoid overloading your machine.
 
 ---
 
 ## Test Coverage
 
-### registration.test.ts — Happy Path
-Covers the full registration flow and positive field interactions — organization and title dropdowns, field inputs, navigation, password visibility toggle, communication preferences, and terms and conditions.
+### registration.test.ts - Happy Path
+Covers the full registration flow and positive field interactions, organization and title dropdowns, field inputs, navigation, password visibility toggle, communication preferences, and terms and conditions.
 
-### registration.negative.test.ts — Negative & Edge Cases
-Covers validation and error handling across both pages - required field errors, invalid email formats, weak password variations, mismatched passwords, special character inputs, and missing consent.
+### registration.negative.test.ts - Negative & Edge Cases
+Covers validation and error handling across both pages required field errors, invalid email formats, weak password variations, mismatched passwords, special character inputs, and missing consent.
 
-### registration.datadriven.test.ts — Data Driven
+### registration.datadriven.test.ts - Data Driven
 Multiple patient profiles tested against the full registration flow covering different organizations, titles, sex at birth options, special character names, and boundary age scenarios.
 
-### registration.accessibility.test.ts — Accessibility
+### registration.accessibility.test.ts - Accessibility
 WCAG 2.0 AA compliance checks on the login page, Your details page, and Set your password page using axe-core.
 
 ---
@@ -135,12 +135,12 @@ Screenshots and videos for failed tests are saved to `test-results/`.
 
 ## Assumptions
 
-- Organization is a required field with a pre-populated list — free text entry is not supported
+- Organization is a required field with a pre-populated list, free text entry is not supported
 - Title is optional
 - Password requirements as stated on the page: minimum 8 characters, one uppercase letter, one number, one special character
-- Date of birth uses three separate dropdowns for Day, Month and Year — not a single date input
+- Date of birth uses three separate dropdowns for Day, Month and Year not a single date input
 - On the Set your password page, validation errors only appear after the terms checkbox is checked and Create Account is clicked
-- UAT environment may be reset periodically — tests use unique generated emails per run to avoid conflicts
+- UAT environment may be reset periodically, tests use unique generated emails per run to avoid conflicts
 
 ---
 
@@ -148,4 +148,4 @@ Screenshots and videos for failed tests are saved to `test-results/`.
 
 - Some validation errors use browser native tooltips which cannot be asserted by text in Playwright. These are handled by asserting the `required` attribute and confirming the URL did not change.
 - Validation error elements do not have stable test attributes such as `data-testid`. Errors are asserted by text content via `getByText()`. If error copy changes, locators in the page object will need updating.
-- Communication preference toggles and terms checkbox on the Set your password page are missing accessible labels — flagged as a WCAG 2.0 A violation in the accessibility tests. This is an app-level issue in the Mantine UI component implementation.
+- Communication preference toggles and terms checkbox on the Set your password page are missing accessible labels, flagged as a WCAG 2.0 A violation in the accessibility tests. This is an app-level issue in the Mantine UI component implementation.
