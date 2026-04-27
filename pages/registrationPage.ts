@@ -251,4 +251,18 @@ export class RegistrationPage {
   async clickCreateAccount() {
     await this.createAccountButton.click()
   }
+
+//// API ACTIONS ─────────────────────────────────────────────────
+
+  async waitForRegistrationResponse(action: () => Promise<void>) {
+    const [response] = await Promise.all([
+      this.page.waitForResponse(
+        (res) => res.url().includes('/register') || res.url().includes('/patient'),
+        { timeout: 15_000 }
+      ),
+      action()
+    ])
+    return response
+  }
+ 
 }
