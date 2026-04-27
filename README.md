@@ -20,12 +20,12 @@ Automated end-to-end test suite for the patient registration workflow at [Script
 │   ├── registration.test.ts                  # Happy path & positive interactions
 │   ├── registration.negative.test.ts         # Negative & edge cases
 │   ├── registration.datadriven.test.ts       # Data-driven scenarios
-│   └── registration.accessibility.test.ts    # WCAG 2.0 checks
+│   ├── registration.accessibility.test.ts    # WCAG 2.0 checks
+│   └── registration.api.test.ts              # API + UI validation
 ├── utils/
 │   └── dataGenerator.ts                      # Faker-based test data factory
 ├── .env.example                              # Environment variable template
 └── playwright.config.ts                      # Playwright configuration
-
 ```
 
 ---
@@ -95,11 +95,15 @@ Multiple patient profiles tested against the full registration flow covering dif
 ### registration.accessibility.test.ts - Accessibility
 WCAG 2.0 AA compliance checks on the login page, Your details page, and Set your password page using axe-core.
 
+### registration.api.test.ts - API + UI Validation
+Intercepts the registration POST request to `uat-rpc-api.../patients` and validates the API response alongside the UI. Covers successful registration status and response structure, request payload integrity, and duplicate email behaviour in UAT.
+
+
 ---
 
 ## Test Execution Proof
 
-All 51 tests passing across 4 suites, attached video and screenshots of the results.
+All 54 tests passing across 5 suites, attached video and screenshots of the results.
 
 | Suite | Tests | Status |
 |---|---|---|
@@ -107,7 +111,8 @@ All 51 tests passing across 4 suites, attached video and screenshots of the resu
 | Negative & Edge Cases | 25 | ✅ Passed |
 | Data Driven | 10 | ✅ Passed |
 | Accessibility | 3 | ✅ Passed |
-| **Total** | **51** | **✅ All Passed** |
+| API + UI Validation | 3 | ✅ Passed |
+| **Total** | **54** | **✅ All Passed** |
 
 E2E happy-path video: https://github.com/user-attachments/assets/330601de-b4ef-44b9-ab80-179c8edc10d7
 
@@ -118,6 +123,8 @@ E2E happy-path video: https://github.com/user-attachments/assets/330601de-b4ef-4
 ![Data Driven Results](https://github.com/user-attachments/assets/f4d532ff-1fd2-4d7e-9977-95445be80a33)
 
 ![Accessibility Results](https://github.com/user-attachments/assets/31cb6e9e-5568-4f83-8863-fc5b6bf8b378)
+
+![API + UI validation](https://github.com/user-attachments/assets/9eb9561c-f8a0-4489-ab86-de5f63d33c56)
 
 ---
 
@@ -149,3 +156,4 @@ Screenshots and videos for failed tests are saved to `test-results/`.
 - Some validation errors use browser native tooltips which cannot be asserted by text in Playwright. These are handled by asserting the `required` attribute and confirming the URL did not change.
 - Validation error elements do not have stable test attributes such as `data-testid`. Errors are asserted by text content via `getByText()`. If error copy changes, locators in the page object will need updating.
 - Communication preference toggles and terms checkbox on the Set your password page are missing accessible labels, flagged as a WCAG 2.0 A violation in the accessibility tests. This is an app-level issue in the Mantine UI component implementation.
+- Duplicate email registrations return 201 in the UAT environment, unique email enforcement should be validated in a production-equivalent environment.
